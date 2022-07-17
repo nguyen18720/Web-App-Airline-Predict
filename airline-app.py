@@ -1,4 +1,4 @@
-
+from markdown import markdown
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -21,7 +21,7 @@ else:
         Gender = st.sidebar.selectbox('Gender',('Female',"Male"))
         Customer_Type = st.sidebar.selectbox('Customer_type',('Loyal Customer','disloyal Customer'))
         Age = st.sidebar.slider('Age',7,85,27,1)
-        Type_of_Travel = st.sidebar.selectbox('Type_of_Travel',('Personal Travel','Business Travel'))
+        Type_of_Travel = st.sidebar.selectbox('Type_of_Travel',('Personal Travel','Business travel'))
         Class = st.sidebar.selectbox("Class",('Eco','Eco Plus','Business'))
         Flight_Distance = st.sidebar.slider('Flight Distance',0,7000,2000)
         Seat_comfort= st.sidebar.select_slider('Seat comfort',options=[1,2,3,4,5],value=(5))
@@ -55,35 +55,43 @@ else:
         Departure_Delay_in_Minutes = st.sidebar.slider('Departure_Delay_in_Minutes',0,1000,0)
         Arrival_Delay_in_Minutes = st.sidebar.slider('Arrival_Delay_in_Minutes',0,1000,0)
         data = {'Gender':Gender,
-                'Customer_Type':Customer_Type,
+                'Customer Type':Customer_Type,
                 'Age':Age,
-                'Type_of_Travel':Type_of_Travel,
+                'Type of Travel':Type_of_Travel,
                 'Class':Class,
-                'Flight_Distance':Flight_Distance,
-                'Seat_comfort':Seat_comfort,
-                'Departure/Arrival_time_convenient':Departure_Arrival_time_convenient,
-                'Food_and_drink':Food_and_drink,
-                'Gate_location':Gate_location,
-                'Inflight_wifi_service':Inflight_wifi_service,
-                'Inflight_entertainment':Inflight_entertainment,
-                'Online_support':Online_support,
-                'Ease_of_Online_booking':Ease_of_Online_booking,
-                'On_board_service':On_board_service,
-                'Leg_room_service':Leg_room_service,
-                'Baggage_handling':Baggage_handling,
-                'Checkin_service':Checkin_service,
+                'Flight Distance':Flight_Distance,
+                'Seat comfort':Seat_comfort,
+                'Departure/Arrival time convenient':Departure_Arrival_time_convenient,
+                'Food and drink':Food_and_drink,
+                'Gate location':Gate_location,
+                'Inflight wifi service':Inflight_wifi_service,
+                'Inflight entertainment':Inflight_entertainment,
+                'Online support':Online_support,
+                'Ease of Online booking':Ease_of_Online_booking,
+                'On board service':On_board_service,
+                'Leg room service':Leg_room_service,
+                'Baggage handling':Baggage_handling,
+                'Checkin service':Checkin_service,
                 'Cleanliness':Cleanliness,
-                'Online_boarding':Online_boarding,
-                'Departure_Delay_in_Minutes':Departure_Delay_in_Minutes,
-                'Arrival_Delay_in_Minutes':Arrival_Delay_in_Minutes}
+                'Online boarding':Online_boarding,
+                'Departure Delay in Minutes':Departure_Delay_in_Minutes,
+                'Arrival Delay in Minutes':Arrival_Delay_in_Minutes}
         features = pd.DataFrame(data,index=[0])   
         return features
     input_df = user_input_feature() 
+def rename_column(df,from_c,to_c = '_'):
+    df.columns = [label.replace(from_c, to_c ) for label in df.columns]
+
+# %%
+rename_column(input_df,' ')
+rename_column(input_df,'-')
 st.subheader('User Input Feature')
 st.write(input_df) 
 
 load_pre = pickle.load(open('Prepare_data.pkl','rb'))
 set = load_pre.transform(input_df)
+
+
 load_rdf = pickle.load(open('model-airline.pkl','rb'))
 predict = load_rdf.predict(set)
 predict_proba = load_rdf.predict_proba(set)

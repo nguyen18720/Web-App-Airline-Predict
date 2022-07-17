@@ -163,6 +163,7 @@ full_col_name = col_name + list(full_pipeline.named_transformers_.onehot.get_fea
 X_train= full_pipeline.transform(X_train)
 X_train = pd.DataFrame(X_train,columns=full_col_name)
 
+
 X_test = full_pipeline.transform(X_test)
 X_test = pd.DataFrame(X_test,columns=full_col_name)
 
@@ -171,6 +172,7 @@ X_dev = pd.DataFrame(X_dev,columns=full_col_name)
 
 
 # %%
+
 from sklearn.ensemble import RandomForestClassifier
 
 rdf_model = RandomForestClassifier(n_jobs= -1, random_state= 101,
@@ -188,6 +190,7 @@ rdf_model.fit(X_train, y_train)
 rdf_model
 
 # %%
+
 y_proba_rdf = rdf_model.predict(X_test)
 print(classification_report(y_proba_rdf, y_test))
 
